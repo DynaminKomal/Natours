@@ -32,7 +32,6 @@ body {
   font-weight: 300;
   font-family: 'Lato', sans-serif;
   color: #777;
-  padding: 3rem;
   min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -43,7 +42,7 @@ body {
   flex-direction: column;
 }
 
-.main {
+.overview {
   background-color: #f7f7f7;
   padding: 8rem 6rem;
   -webkit-box-flex: 1;
@@ -830,6 +829,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  justify-content: flex-end;
 }
 .footer__nav li {
   margin-left: 1.5rem;

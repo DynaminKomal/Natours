@@ -46,8 +46,30 @@ app.use(hpp({
 
 //All Router
 
+// for practice to create first pug file and render it
+// app.get('/', (req, res) => {
+//     res.status(200).render('practice',{
+//         tour: "The Forest Hiker",
+//         user: 'Jonas'
+//     });
+// })
+
+
 app.get('/', (req, res) => {
-    res.status(200).render('base');
+    res.status(200).render('base',{
+        title: "Exciting tours for adventurous people"
+    });
+})
+
+app.get('/overview', (req, res) => {
+    res.status(200).render('overview',{
+        title: "Overview"
+    });
+})
+app.get('/tour', (req, res) => {
+    res.status(200).render('tour',{
+        title: "All Tours"
+    });
 })
 
 app.use('/api/v1', router);
