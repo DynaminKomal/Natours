@@ -34,7 +34,7 @@ const rules = {
 
     //FOR REVIEW
     "GET /api/v1/reviews/": ruleTrue,
-    "POST /api/v1/reviews/": ruleTrue,
+    "POST /api/v1/reviews/": user_guide,
     
     // For individual (/:id) Tour
     "DELETE /api/v1/tours/:id": admin,
