@@ -14,6 +14,7 @@ const admin = { ...ruleFalse, admin: true }
 const guide = { ...ruleFalse, guide: true }
 const user = { ...ruleFalse, user: true }
 const admin_guide = { ...ruleFalse, admin: true, guide: true }
+const user_guide = { ...ruleFalse, user: true, guide: true }
 
 const rules = {
     // FOR AUTH
@@ -37,7 +38,7 @@ const rules = {
     
     // For individual (/:id) Tour
     "DELETE /api/v1/tours/:id": admin,
-    "PUT /api/v1/tours/:id": admin_guide,
+    "PUT /api/v1/tours/:id": admin,
     "GET /api/v1/tours/:id": ruleTrue,
     "PUT /api/v1/tours/:id": admin_guide,
     "DELETE /api/v1/tours/:id": admin,
@@ -46,8 +47,8 @@ const rules = {
     "DELETE /api/v1/users/:id": admin,
     
     // For individual (/:id) Review
-    "PUT /api/v1/reviews/:id": user,
-    "POST /api/v1/tours/:tourId/reviews/": ruleTrue,
+    "PUT /api/v1/reviews/:id": user_guide,
+    "POST /api/v1/tours/:tourId/reviews/": user_guide,
     "DELETE /api/v1/reviews/:id": ruleTrue,
 };
 
