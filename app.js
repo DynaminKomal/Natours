@@ -4,6 +4,7 @@ const router = require('./router');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize')
 const hpp = require('hpp')
+const tempalteRoute = require('./router/templateRoute')
 
 
 const app = express();
@@ -44,33 +45,11 @@ app.use(hpp({
     ]
 }))
 
-//All Router
+//All Templates Router
 
-// for practice to create first pug file and render it
-// app.get('/', (req, res) => {
-//     res.status(200).render('practice',{
-//         tour: "The Forest Hiker",
-//         user: 'Jonas'
-//     });
-// })
+app.use('/', tempalteRoute)
 
-
-app.get('/', (req, res) => {
-    res.status(200).render('base',{
-        title: "Exciting tours for adventurous people"
-    });
-})
-
-app.get('/overview', (req, res) => {
-    res.status(200).render('overview',{
-        title: "Overview"
-    });
-})
-app.get('/tour', (req, res) => {
-    res.status(200).render('tour',{
-        title: "All Tours"
-    });
-})
+//All API Router
 
 app.use('/api/v1', router);
 
