@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const router = require('./router');
 const rateLimit = require('express-rate-limit');
@@ -8,6 +9,13 @@ const hpp = require('hpp')
 const app = express();
 const morgan = require('morgan');
 const { sendResponse } = require('./utility/response-utility');
+
+// pug is used with express to render a tempalte
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+//Serving static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 //DEVELOPMENT API LOGGER
 if (process.env.NODE_ENV === 'development') {
@@ -31,14 +39,19 @@ app.use(mongoSanitize())
 
 //Prevent Parameter Pollution 
 app.use(hpp({
-    whitelist:[
+    whitelist: [
         'duration'
     ]
 }))
 
-// get all tours data
+//All Router
+
+app.get('/', (req, res) => {
+    res.status(200).render('base');
+})
 
 app.use('/api/v1', router);
+
 app.all("*", (req, res, next) => {
     sendResponse(res, 404, "fail", `Can't find ${req.originalUrl} on this server!`)
 })
