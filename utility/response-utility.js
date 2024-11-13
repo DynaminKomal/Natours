@@ -20,13 +20,25 @@ exports.sendResponse = (res, statusCode, status, message, data = null) => {
 // Centralized error handler
 exports.handleError = (res, err) => {
     const statusCode = err.statusCode || 400;
-    if (err.name === "TokenExpiredError") {
-        this.sendResponse(res, statusCode, "fail", "Token Expire. Please loggin again.");
-    }
-    else if (err.name === 'JsonWebTokenError') {
-        this.sendResponse(res, statusCode, "fail", "Invalid Token. Please loggin again.");
-    } 
-    else {
-        this.sendResponse(res, statusCode, "fail", err.message || "An unexpected error occurred");
+
+    // Check the environment and adjust error response accordingly
+    if (process.env.NODE_ENV === 'production') {
+        // In production, don't expose internal error details
+        if (err.name === "TokenExpiredError") {
+            this.sendResponse(res, statusCode, "fail", "Token Expired. Please log in again.");
+        } else if (err.name === 'JsonWebTokenError') {
+            this.sendResponse(res, statusCode, "fail", "Invalid Token. Please log in again.");
+        } else {
+            this.sendResponse(res, statusCode, "fail", "An unexpected error occurred.");
+        }
+    } else {
+        // In development, provide more detailed error information for debugging
+        if (err.name === "TokenExpiredError") {
+            this.sendResponse(res, statusCode, "fail", `Token Expired. Please log in again. Details: ${err.message}`);
+        } else if (err.name === 'JsonWebTokenError') {
+            this.sendResponse(res, statusCode, "fail", `Invalid Token. Please log in again. Details: ${err.message}`);
+        } else {
+            this.sendResponse(res, statusCode, "fail", `An unexpected error occurred. Details: ${err.message}`);
+        }
     }
 };
