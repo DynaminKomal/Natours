@@ -101,14 +101,11 @@ const tourSchema = new mongoose.Schema({
 tourSchema.index({ price: 1 })
 tourSchema.index({ ratingsAverage: 1 })
 
-tourSchema.virtual("slug").get(function(){
-    return this.name.toLowerCase().replace(/\s+/g, '-');
-})
-
 tourSchema.virtual('reviews', {
     ref: 'Reviews',
     foreignField: 'tour',
-    localField: '_id'
+    localField: '_id',
+    select: 'rating review user'
 })
 
 tourSchema.pre('save', async function (next) {
@@ -120,10 +117,10 @@ tourSchema.pre('save', async function (next) {
 tourSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'guides',
-        select: '-__v -passwordChangedAt -password -role'
-    })
+        select: 'name photo role'
+    });
     next();
-})
+});
 
 
 

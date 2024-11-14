@@ -55,14 +55,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.virtual("nameParts").get(function() {
-    const nameParts = this.name.split(" ");
-    return {
-        firstName: nameParts[0],
-        lastName: nameParts[1] || "" 
-    };
-});
-
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
