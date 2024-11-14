@@ -1,22 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const viewController = require('../controllers/viewController')
 
-// base template
-router.get('/', (req, res) => {
-    res.status(200).render('base', {
-        title: "Exciting tours for adventurous people"
-    });
-})
-
-router.get('/overview', (req, res) => {
-    res.status(200).render('overview', {
-        title: "Overview"
-    });
-})
-router.get('/tour', (req, res) => {
-    res.status(200).render('tour', {
-        title: "All Tours"
-    });
-})
+//all templates
+router.get('/', viewController.getOverview)
+router.get('/tour', viewController.getAllTour)
 
 module.exports = router;

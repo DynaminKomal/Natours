@@ -101,6 +101,10 @@ const tourSchema = new mongoose.Schema({
 tourSchema.index({ price: 1 })
 tourSchema.index({ ratingsAverage: 1 })
 
+tourSchema.virtual("slug").get(function(){
+    return this.name.toLowerCase().replace(/\s+/g, '-');
+})
+
 tourSchema.virtual('reviews', {
     ref: 'Reviews',
     foreignField: 'tour',
