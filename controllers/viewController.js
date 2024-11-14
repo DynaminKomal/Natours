@@ -16,9 +16,16 @@ exports.getOverview = grasp(async (req, res, next) => {
     }
 })
 
-exports.getAllTour = (req, res) => {
-    res.status(200).render('tour', {
-        title: "Tour"
-    });
-}
+exports.getTour = grasp(async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const formattedName = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        const getTour = await Tour.findOne({ name: formattedName }).populate("reviews")
+        res.status(200).render('tour', {
+            title: `${getTour.name} tour`,
+            tour: getTour
+        });
+    } catch (error) {
+    }
+})
 

@@ -4,6 +4,6 @@ const viewController = require('../controllers/viewController')
 
 //all templates
 router.get('/', viewController.getOverview)
-router.get('/tour', viewController.getAllTour)
+router.get('/tour/:slug', viewController.getTour)
 
 module.exports = router;

@@ -41,4 +41,5 @@ block content
                             span.card__footer-valuex #{tour.ratingsAverage}
                             | 
                             span.card__footer-textrating= `rating (${tour.ratingsQuantity})`
-                        a.btn.btn--green.btn--small(href=`/tour/${tour.id}`) Details
+                        - const name = tour.name.toLowerCase().replace(/ /g, '-')
+                        a.btn.btn--green.btn--small(href=`/tour/${name}`) Details
