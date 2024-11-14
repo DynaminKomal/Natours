@@ -18,7 +18,7 @@ block content
                         .card__data
                             svg.card__icon
                                 use(xlink:href="img/icons.svg#icon-map-pin")
-                            span= `${tour.startLocation && tour.startLocation.description?  tour.startLocation.description : 'Unknown'}Location`
+                            span= `${tour.startLocation && tour.startLocation.description?  tour.startLocation.description : 'Unknown'}`
                         .card__data
                             svg.card__icon
                                 use(xlink:href="img/icons.svg#icon-calendar")
@@ -41,4 +41,4 @@ block content
                             span.card__footer-valuex #{tour.ratingsAverage}
                             | 
                             span.card__footer-textrating= `rating (${tour.ratingsQuantity})`
-                        a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details
+                        a.btn.btn--green.btn--small(href=`/tour/${tour.id}`) Details

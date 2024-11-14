@@ -1322,3 +1322,16 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  cursor: pointer;
+  background: #44444c;
+}
