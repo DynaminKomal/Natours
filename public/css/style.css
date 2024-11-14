@@ -517,7 +517,7 @@ body {
   );
   margin-top: calc(0px - var(--section-rotate));
   position: relative;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .picture-box__img {
