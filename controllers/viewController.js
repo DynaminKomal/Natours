@@ -29,3 +29,16 @@ exports.getTour = grasp(async (req, res) => {
     }
 })
 
+
+
+exports.login = grasp(async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        res.status(200).render('login', {
+            title: "Login",
+        });
+    } catch (error) {
+    }
+})
+
