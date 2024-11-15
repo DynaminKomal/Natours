@@ -43,3 +43,27 @@ exports.tokenVerify = grasp(async (req, res, next) => {
         }
     }
 })
+
+
+exports.isLoggedIn = grasp(async (req, res, next) => {
+
+    if (req.cookies.jwt) {
+        //verify token
+        const decodeToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+
+        const userExist = await User.findById(decodeToken.id)
+        if (!userExist) {
+            return next();
+        }
+
+        // check password recently changed or not
+        const isPasswordChange = await userExist.changePassword(decodeToken.iat)
+        if (isPasswordChange) {
+            return sendResponse(res, 401, "fail", "User recently changed password!. PLease loggin again.");
+        }
+        // There is logged in user
+        res.locals.user = userExist;
+        return next();
+    }
+    next();
+})

@@ -13,14 +13,19 @@ const login = async (email, password) => {
         const res = await axios({
             method: 'POST',
             url: url,
-            data:{
+            data: {
                 email,
                 password
             }
         })
 
-        console.log("res", res)
+        if (res.data.status === "success") {
+            alert(res.data.message);
+            window.setTimeout(() => {
+                location.assign('/');
+            }, 1500)
+        }
     } catch (error) {
-        console.log("error", error.response.data    )
+        alert(error.response.data.message);
     }
 }
