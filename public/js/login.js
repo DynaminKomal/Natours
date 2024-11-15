@@ -1,11 +1,17 @@
 import { constant } from '../constant/api.js';
+import { showAlert } from './alters.js';
 
-document.querySelector('.form').addEventListener('submit', e => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    login(email, password)
-})
+const form = document.querySelector('.form');
+
+if (form) {
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        login(email, password)
+    })
+}
+
 
 const login = async (email, password) => {
     try {
@@ -20,12 +26,12 @@ const login = async (email, password) => {
         })
 
         if (res.data.status === "success") {
-            alert(res.data.message);
+            showAlert("success", res.data.message);
             window.setTimeout(() => {
                 location.assign('/');
             }, 1500)
         }
     } catch (error) {
-        alert(error.response.data.message);
+        showAlert("error", error.response.data.message);
     }
 }
