@@ -50,6 +50,9 @@ const rules = {
     "PUT /api/v1/reviews/:id": user_guide,
     "POST /api/v1/tours/:tourId/reviews/": user_guide,
     "DELETE /api/v1/reviews/:id": ruleTrue,
+
+    //path for UI
+    "GET /tour/:slug": ruleTrue,
 };
 
 // Convert paths to regular expressions

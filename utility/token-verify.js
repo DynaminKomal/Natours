@@ -9,6 +9,8 @@ exports.tokenVerify = grasp(async (req, res, next) => {
     const url = `${req.method} ${req.baseUrl}${req.path}`
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1]
+    }else if(req.cookies.jwt){
+        token = req.cookies.jwt
     }
     if (!token) {
         return sendResponse(res, 401, "fail", "You are not logged In!");

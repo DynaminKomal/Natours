@@ -5,26 +5,45 @@ const UserHistory = require('../models/userHistoryModel');
 const sendEmail = require('../utility/emails');
 const crypto = require('crypto')
 
+// Generate JWT token
 const getToken = (id) => {
-    return jwt.sign({
-        id: id
-    }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-}
+    return jwt.sign(
+        { id: id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+};
+
+// Set JWT token in cookies
+const setCookies = (token, res) => {
+    const cookiesOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+        cookiesOptions.secure = true; 
+    }
+
+    res.cookie('jwt', token, cookiesOptions); 
+};
 
 exports.signup = grasp(async (req, res) => {
     try {
         const newUser = await User.create(req.body);
-        const token = getToken(newUser._id)
+        const token = getToken(newUser._id);
+        setCookies(token, res);
+
         const newData = {
             token: token,
             data: newUser
-        }
-        sendResponse(res, 201, "success", "A new user created Successfully!", newData)
+        };
+
+        sendResponse(res, 201, "success", "A new user created successfully!", newData);
     } catch (err) {
         handleError(res, err);
     }
-
-})
+});
 
 
 
@@ -43,6 +62,7 @@ exports.login = grasp(async (req, res) => {
         return sendResponse(res, 401, "fail", "Please provide correct password!");
     }
     const token = getToken(user._id)
+    setCookies(token, res)
     const userData = {
         token: token,
         data: user
@@ -121,6 +141,7 @@ exports.resetPassword = grasp(async (req, res) => {
 
 
         const token = getToken(userExist._id)
+        setCookies(token, res)
         const userData = {
             token: token,
             data: user

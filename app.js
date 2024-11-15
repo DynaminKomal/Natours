@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const router = require('./router');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize')
@@ -8,6 +9,11 @@ const tempalteRoute = require('./router/templateRoute')
 
 
 const app = express();
+
+// Use cookie-parser middleware
+app.use(cookieParser());
+
+
 const morgan = require('morgan');
 const { sendResponse } = require('./utility/response-utility');
 
