@@ -5,9 +5,9 @@ const { isLoggedIn } = require('../utility/token-verify');
 
 router.use(isLoggedIn)
 
-//all templates
-router.get('/', viewController.getOverview)
 router.get('/login', viewController.login)
+router.get('/', viewController.getOverview)
+
 router.get('/tour/:slug', viewController.getTour)
 
 module.exports = router;

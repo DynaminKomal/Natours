@@ -71,6 +71,14 @@ exports.login = grasp(async (req, res) => {
 })
 
 
+exports.logout = (req,res)=>{
+    res.cookie('jwt', "loggedout", {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    }); 
+    sendResponse(res, 200, "success", "You logged out!")
+}
+
 
 exports.forgetPassword = grasp(async (req, res) => {
     try {
