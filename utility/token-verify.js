@@ -9,7 +9,7 @@ exports.tokenVerify = grasp(async (req, res, next) => {
     const url = `${req.method} ${req.baseUrl}${req.path}`
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1]
-    }else if(req.cookies.jwt){
+    } else if (req.cookies.jwt) {
         token = req.cookies.jwt
     }
     if (!token) {
@@ -36,7 +36,7 @@ exports.tokenVerify = grasp(async (req, res, next) => {
     } else {
         if (checkAccess.message === "Invalid path") {
             return sendResponse(res, 401, "fail", "Invalid path.")
-            ;
+                ;
 
         } else if (checkAccess.message === "Access denied") {
             return sendResponse(res, 403, "fail", "Access denied.");
@@ -44,26 +44,24 @@ exports.tokenVerify = grasp(async (req, res, next) => {
     }
 })
 
-
-exports.isLoggedIn = grasp(async (req, res, next) => {
-
+exports.isLoggedIn = async (req, res, next) => {
     if (req.cookies.jwt) {
-        //verify token
-        const decodeToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-
-        const userExist = await User.findById(decodeToken.id)
-        if (!userExist) {
+        try {
+            const decodedToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+            const userExist = await User.findById(decodedToken.id);
+            if (!userExist) {
+                return next(); 
+            }
+            
+            const isPasswordChange = await userExist.changePassword(decodedToken.iat);
+            if (isPasswordChange) {
+                return sendResponse(res, 401, "fail", "User recently changed password! Please log in again.");
+            }
+            res.locals.user = userExist;
+            return next();  
+        } catch (err) {
             return next();
         }
-
-        // check password recently changed or not
-        const isPasswordChange = await userExist.changePassword(decodeToken.iat)
-        if (isPasswordChange) {
-            return sendResponse(res, 401, "fail", "User recently changed password!. PLease loggin again.");
-        }
-        // There is logged in user
-        res.locals.user = userExist;
-        return next();
     }
-    next();
-})
+    return next();
+};

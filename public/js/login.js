@@ -32,7 +32,6 @@ const login = async (email, password) => {
             showAlert("success", res.data.message);
             window.setTimeout(() => {
                 location.assign('/');
-                location.reload(true);
             }, 1500)
         }
     } catch (error) {
