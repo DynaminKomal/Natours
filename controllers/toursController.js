@@ -2,7 +2,14 @@ const Tour = require('../models/tourModel');
 const apiFeature = require('../utility/api-features');
 const { sendResponse, handleError, grasp } = require('../utility/response-utility')
 const factory = require('./handlerFactory')
+const cloudinary = require('cloudinary').v2;
 
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
 
 // Check for required data
 exports.checkDataExists = (req, res, next) => {
@@ -27,6 +34,40 @@ exports.deleteTour = factory.deleteOne(Tour)
 
 // Update a tour
 exports.updateTour = factory.updateOne(Tour)
+
+
+exports.uploadFile = grasp(async (req, res) => {
+    try {
+        const files = req.files.imageCover;
+        const filesUrl = [];
+        const filesArray = Array.isArray(files) ? files : [files];
+
+        const uploadPromises = filesArray.map(file => {
+            return new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(file.tempFilePath, {
+                    folder: "Tour",
+                    public_id: file.name
+                }, (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result.url);
+                    }
+                });
+            });
+        });
+
+        const uploadedUrls = await Promise.all(uploadPromises);
+
+        res.status(200).json({
+            data: uploadedUrls.length > 0 ? uploadedUrls : "no data"
+        });
+
+    } catch (error) {
+        handleError(res, error);
+    }
+});
+
 
 
 // aggregation pipeline

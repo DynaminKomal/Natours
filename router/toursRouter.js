@@ -13,6 +13,7 @@ router.get('/monthly-plan', toursController.getMonthlyPlan)
 
 router.get('/', toursController.getAllTours)
 router.post('/', toursController.checkDataExists, toursController.createTour)
+router.post('/upload-file', toursController.uploadFile)
 router.get('/:id', toursController.getTour)
 router.put('/:id', toursController.updateTour)
 router.delete('/:id', toursController.deleteTour)

@@ -5,7 +5,9 @@ const router = require('./router');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize')
 const hpp = require('hpp')
-const tempalteRoute = require('./router/templateRoute')
+const tempalteRoute = require('./router/templateRoute');
+const cors = require('cors');
+const fileUpload = require('express-fileupload')
 
 
 const app = express();
@@ -13,6 +15,14 @@ const app = express();
 // Use cookie-parser middleware
 app.use(cookieParser());
 
+// this id for file upload
+app.use(fileUpload({
+    useTempFiles: true
+}))
+
+app.use(cors({
+    origin: '*', // Allow this origin
+}));
 
 const morgan = require('morgan');
 const { sendResponse } = require('./utility/response-utility');

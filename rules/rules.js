@@ -31,6 +31,7 @@ const rules = {
     //FOR TOUR
     "GET /api/v1/tours/": ruleTrue,
     "POST /api/v1/tours/": admin_guide,
+    "POST /api/v1/tours/upload-file": admin,
 
     //FOR REVIEW
     "GET /api/v1/reviews/": ruleTrue,
