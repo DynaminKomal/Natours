@@ -46,7 +46,7 @@ exports.uploadFile = grasp(async (req, res) => {
             return new Promise((resolve, reject) => {
                 cloudinary.uploader.upload(file.tempFilePath, {
                     folder: "Tour",
-                    public_id: file.name
+                    public_id: file.name.replace(/\.(jpg|jpeg|png)$/, "")
                 }, (err, result) => {
                     if (err) {
                         reject(err);
